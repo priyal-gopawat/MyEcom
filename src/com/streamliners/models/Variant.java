@@ -1,10 +1,21 @@
 package com.streamliners.models;
 
+/**
+ * represents a variant with...
+ *
+ * name - name of the variant
+ * price - price of the variant
+ */
 public class Variant {
-    String name; //name of variant
-    float price; //price of variant
+     String name;
+     float price;
 
-    //Initializing Parameterized Constructor for the variant
+    /**
+     * parametrized constructor for variant
+     *
+     * @param name  name of the variant
+     * @param price price of the variant
+     */
     public Variant(String name, float price) {
         this.name = name;
         this.price = price;
@@ -17,5 +28,5 @@ public class Variant {
                 ", price=" + price +
                 '}';
     }
-
 }
+
