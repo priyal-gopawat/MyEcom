@@ -1,18 +1,62 @@
 package com.streamliners.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
 
 public class Cart {
-
-   public HashMap<String, CartItem> cartItems = new HashMap<>();
+    Scanner sc = new Scanner(System.in);
+    public HashMap<String, CartItem> cartItems = new HashMap<>();
     float total, noOfItems;
 
-    /**
-     * Adding weight based product to the cart
-     * @param product
-     * @param qty  qty to be added
-     */
-     public void add(Product product, float qty) {
+
+    public void add(Shop shop) {
+        while(true){
+            System.out.println(Colors.YELLOW + "\nSelect type of the product you want to add " + Colors.RESET);
+            Object[] arrayList = shop.productList.keySet().toArray();
+            for (int i = 0; i < arrayList.length; i++)
+                System.out.println(i + " " + arrayList[i]);
+            System.out.println(arrayList.length + " Exit ");
+            System.out.print("Enter your choice : ");
+            int choice = sc.nextInt();
+            if (choice == arrayList.length)
+                break;
+            Product product = shop.productList.get(arrayList[choice]);
+            if (product.type == ProductType.TYPE_WB) {
+                addWBP(product);
+            } else {
+                addVBP(product);
+            }
+            System.out.println(Colors.CYAN + "Product Successfully added to cart !" + Colors.RESET);
+        }
+    }
+
+    private void addVBP(Product product) {
+        List<Variant> variants = product.variants;
+        for (int i = 0; i < variants.size(); i++)
+            System.out.println(i + " " + variants.get(i));
+        System.out.print("Enter you choice : ");
+        int n = sc.nextInt();
+        Variant variant = variants.get(n);
+        String key = product.name + " " + variant.name;
+        //Already exist
+        if (cartItems.containsKey(key)) {
+            cartItems.get(key).qty++;
+        }
+        //Adding for the first time
+        else {
+            CartItem item = new CartItem(product.name, variant.price, 1);
+            cartItems.put(key, item);
+        }
+        //update cart summary
+        noOfItems++;
+        total += variant.price;
+    }
+
+    private void addWBP(Product product) {
+        System.out.print("Enter qty you want to add : ");
+        float qty = sc.nextFloat();
         //If item already exist in cart
         if (cartItems.containsKey(product.name)) {
             total -= cartItems.get(product.name).cost();
@@ -27,96 +71,93 @@ public class Cart {
         total += product.pricePerKg * qty;
     }
 
-    /**
-     * Adding variant based product to the cart
-     * @param product
-     * @param variant variant to be added
-     */
-     public void add(Product product, Variant variant) {
-        String key = product.name + " " + variant.name;
-        //Already exist
-        if (cartItems.containsKey(key)) {
-            cartItems.get(key).qty++;
+
+    public void remove(Cart cart) {
+        while (true) {
+            System.out.println(Colors.YELLOW + "\nSelect type of the product you want to remove" + Colors.RESET);
+            Object[] cartKey = cartItems.keySet().toArray();
+            for (int i = 0; i < cartKey.length; i++)
+                System.out.println(i + "" + cartKey[i]);
+            System.out.println(cartKey.length +" Exit ");
+            System.out.print("Enter your choice : ");
+            int choice = sc.nextInt();
+            if(choice==cartKey.length)
+                break;
+            CartItem cartItem = cartItems.get(cartKey[choice]);
+            cartItems.remove(cartKey[choice]);
+            total -= cartItem.cost();
+            String[] arr = cartKey[choice].toString().split(" ");
+            if (arr.length == 1)
+                noOfItems--;
+            else
+                noOfItems -= cartItem.qty;
+            System.out.println(Colors.CYAN + "Product successfully Removed from cart ! " + Colors.RESET);
         }
-        //Adding for thr first time
-        else {
-            CartItem item = new CartItem(product.name, variant.price,1);
-            cartItems.put(key,item);
-        }
-        //update cart summary
-        noOfItems++;
-        total += variant.price;
     }
 
-    /**
-     * Removing product
-     * @param product
-     */
-    public void remove(Product product){
-         if(product.type==ProductType.TYPE_WB){
-             removeWBP(product);
-         } else{
-             removeAllVariantsOfVBP(product);
-         }
-
-    }
-
-    /**
-     * Removing weight based product
-     * @param product
-     */
-    private void removeWBP(Product product) {
-        //update cart summary
-        total -= cartItems.get(product.name).cost();
-        noOfItems--;
-        cartItems.remove(product.name);
-    }
 
     /**
      * Removing all variants of VBP
+     *
      * @param product
      */
-    public void removeAllVariantsOfVBP(Product product){
-       for(Variant variant : product.variants){
-           String key = product.name + " " + variant.name;
+    public void removeAllVariantsOfVBP(Product product) {
+        for (Variant variant : product.variants) {
+            String key = product.name + " " + variant.name;
 
-           if(cartItems.containsKey(key)){
-               //update cart summary
-               total -= cartItems.get(key).cost();
-               noOfItems-= cartItems.get(key).qty;
-
-
-               cartItems.remove(key);
-           }
-       }
+            if (cartItems.containsKey(key)) {
+                //update cart summary
+                total -= cartItems.get(key).cost();
+                noOfItems -= cartItems.get(key).qty;
+                cartItems.remove(key);
+            }
+        }
     }
 
-    /**
-     * Decrement qty of variant
-     * @param product
-     * @param variant
-     */
-    public void decrement(Product product,Variant variant){
-        String key = product.name + " " + variant.name;
-
-        //Update qty
-        cartItems.get(key).qty--;
-
-        //Update cart summary
-        total -= variant.price;
-        noOfItems--;
-
-        //Remove if qty=0
-        if( cartItems.get(key).qty==0)
-            cartItems.remove(key);
-
+    public void edit(Cart cart) {
+        while (true) {
+            System.out.println(Colors.YELLOW + "\nChoose from following product " + Colors.RESET);
+            Object[] cartKey = cartItems.keySet().toArray();
+            for (int i = 0; i < cartKey.length; i++)
+                System.out.println(i + " " + cartKey[i]);
+            System.out.println(cartKey.length+" Exit ");
+            System.out.print("Enter your choice : ");
+            int choice = sc.nextInt();
+            if(choice==cartKey.length)
+                break;
+            CartItem cartItem = cartItems.get(cartKey[choice]);
+            String[] arr = cartKey[choice].toString().split(" ");
+            if (arr.length == 1) {
+                System.out.print("Enter new qty :");
+                float qty = sc.nextFloat();
+                cartItem.qty = qty;
+            } else {
+                while (true) {
+                    String menu = "\n=================" +
+                            "\n0.Go Back" +
+                            "\n1.Increment" +
+                            "\n2.Decrement" +
+                            "\n=================";
+                    System.out.println(menu);
+                    System.out.print("Enter your option :");
+                    int option = sc.nextInt();
+                    if (option == 0)
+                        break;
+                    else if (option == 1) {
+                        cartItem.qty++;
+                        System.out.println(Colors.CYAN +"Incremented !" + Colors.RESET);
+                    } else {
+                        cartItem.qty--;
+                        System.out.println(Colors.CYAN +"Decremented !" + Colors.RESET);
+                    }
+                }
+            }
+        }
     }
-
 
 
     @Override
     public String toString() {
-        return cartItems.values()
-                +String.format("\n total %f items (Rs.%f)",noOfItems,total);
+        return cartItems.values() + "\n" + "Total No Of Items = " + noOfItems +"\nTotal Amount = "+total;
     }
 }

@@ -1,54 +1,77 @@
 package com.streamliners;
 
-import com.streamliners.models.Cart;
-import com.streamliners.models.Product;
-import com.streamliners.models.Variant;
+import com.streamliners.models.*;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        Product apple = new Product("Apple"," ",0.5f,100)
-                  ,orange = new Product("Orange"," ",0.5f,80)
-                  ,kiwi = new Product("Kiwi"," ",new ArrayList<Variant>(
-                          Arrays.asList(
-                                  new Variant("500g",96)
-                                  ,new Variant("1Kg",180)
-                          )))
-                  ,surfExcel=new Product("SurfExcel","",new ArrayList<>(
-                Collections.singletonList(new Variant("1Kg", 180))));
-
-
+        Scanner sc = new Scanner(System.in);
+        Shop shop = new Shop();
         Cart cart = new Cart();
-        //Adding the product
-        cart.add(orange,2.5f);
-        cart.add(kiwi, kiwi.variants.get(1));
-        cart.add(kiwi, kiwi.variants.get(1));
-        cart.add(kiwi, kiwi.variants.get(1));
-        cart.add(surfExcel,surfExcel.variants.get(0));
-        cart.add(surfExcel,surfExcel.variants.get(0));
 
-        System.out.println(cart);
-        //Removing the product
-        cart.remove(orange);
-        System.out.println();
-        System.out.println(cart);
+        String optionsMenu ="====================================="+
+                "\nSelect your choice from the given ones" +
+                "\n\n0: Exit" +
+                "\n1: Add product to shop" +
+                "\n2: Edit product in shop" +
+                "\n3: Delete product from shop" +
+                "\n4: See all products in shop" +
+                "\n\n5: Add product to cart" +
+                "\n6: Edit product in cart" +
+                "\n7: Remove product from cart" +
+                "\n8: Get Cart details" +
+                "\n9: Place Order" +
+                "\n====================================="+
+                "\nEnter your choice: ";
 
-        //It decrement the qty of product
-        cart.decrement(surfExcel,surfExcel.variants.get(0));
-        System.out.println();
-        System.out.println(cart);
+        while (true){
+            System.out.print(optionsMenu);
+            int n = sc.nextInt();
 
-        cart.decrement(surfExcel,surfExcel.variants.get(0));
-        System.out.println();
-        System.out.println(cart);
+            switch (n){
+                case 0:
+                    System.out.println("Thank You!");
+                    return;
 
+                case 1:
+                    shop.add();
+                    break;
 
+                case 2:
+                    shop.edit();
+                    break;
+
+                case 3:
+                    shop.deleteProduct();
+                    break;
+
+                case 4:
+                    System.out.println(shop);
+                    break;
+
+                case 5:
+                    cart.add(shop);
+                    break;
+
+                case 6:
+                    cart.edit(cart);
+                    break;
+
+                case 7:
+                    cart.remove(cart);
+                    break;
+
+                case 8:
+                    System.out.println(cart);
+                    break;
+
+                case 9:
+                    System.out.println(Colors.CYAN+"Order Placed Successfully"+Colors.RESET);
+
+            }
+        }
 
     }
-
 }

@@ -43,21 +43,13 @@ public class Product {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        if (type == ProductType.TYPE_WB)
-            builder.append("WB { ");
-        else
-            builder.append("VB { ");
-        builder.append("name = ").append(name);
+        StringBuilder sb = new StringBuilder();
 
-        if (type == ProductType.TYPE_WB) {
-            builder.append(" , minQty = ").append(minQty);
-            builder.append(" , pricePerKg = ").append(pricePerKg);
-        } else
-            builder.append(" , variants = ").append(variants);
-
-        builder.append(" } ");
-
-        return builder.toString();
+        if (type==0){
+            return name + " @Rs " + pricePerKg + "/kg";
+        }
+        else {
+            return name + " " + variants ;
+        }
     }
 }

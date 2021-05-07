@@ -29,8 +29,6 @@ public class CartItem {
 
     @Override
     public String toString() {
-        return "\n" + name  +
-               String.format("( %f * %f = %f",unitPrice,qty,cost())
-                +" ) ";
+        return "\n" + name + String.format("(%f X %f = %f)",unitPrice,qty,cost());
     }
 }
