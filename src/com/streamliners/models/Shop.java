@@ -7,8 +7,11 @@ import java.util.Scanner;
 
 public class Shop {
     Scanner sc = new Scanner(System.in);
-    HashMap<String, Product> productList = new HashMap<>();
+    HashMap<String, Product> productList = new HashMap<>(); //Hashmap to store list of product in productList
 
+    /**
+     * Adding product to shop
+     */
     public void add() {
         while (true) {
             System.out.println(Colors.YELLOW + "\nSelect type of the product you want to add " + Colors.RESET);
@@ -28,6 +31,9 @@ public class Shop {
         }
     }
 
+    /**
+     * Adding weight Based Product to shop
+     */
     public void addWBP() {
         System.out.println(Colors.YELLOW + "\nAdding Weight Based product to shop " + Colors.RESET);
         System.out.print("Enter the name of the product : ");
@@ -45,6 +51,9 @@ public class Shop {
         System.out.println(Colors.CYAN + "Product successfully added to shop !" + Colors.RESET);
     }
 
+    /**
+     * Adding variant based product to shop
+     */
     public void addVBP() {
         System.out.println(Colors.YELLOW + "\nAdding Variant Based product to shop " + Colors.RESET);
         System.out.print("Enter the name of the product : ");
@@ -69,6 +78,9 @@ public class Shop {
         System.out.println(Colors.CYAN + "Product successfully added to shop ! " + Colors.RESET);
     }
 
+    /**
+     * Delete product from shop
+     */
     public void deleteProduct() {
         System.out.println(Colors.YELLOW + "\nSelect type of the product you want to delete" + Colors.RESET);
         Object[] arrayList = productList.keySet().toArray();
@@ -80,6 +92,9 @@ public class Shop {
         System.out.println(Colors.CYAN + "Product successfully Deleted from shop ! " + Colors.RESET);
     }
 
+    /**
+     * edit product from shop
+     */
     public void edit() {
         while (true) {
             System.out.println(Colors.YELLOW + "\nChoose from following product " + Colors.RESET);
@@ -100,6 +115,10 @@ public class Shop {
         }
     }
 
+    /**
+     * Edit weight based product from shop
+     * @param product
+     */
     public void editWBP(Product product) {
         while (true) {
             System.out.print("Choose property you want to edit : ");
@@ -133,6 +152,10 @@ public class Shop {
         }
     }
 
+    /**
+     * Adding variant based product from shop
+     * @param product
+     */
     public void editVBP(Product product) {
         while (true) {
             System.out.print("Choose property you want to edit : ");

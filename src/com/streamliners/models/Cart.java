@@ -5,12 +5,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * HashMap to Store CartItem in the Cart corresponding to Product name as its key.
+ * Total cost And no. of items in the cart
+ */
 public class Cart {
     Scanner sc = new Scanner(System.in);
     public HashMap<String, CartItem> cartItems = new HashMap<>();
     float total, noOfItems;
 
 
+    /**
+     * Adding Products to cart
+     * @param shop
+     */
     public void add(Shop shop) {
         while(true){
             System.out.println(Colors.YELLOW + "\nSelect type of the product you want to add " + Colors.RESET);
@@ -32,6 +40,10 @@ public class Cart {
         }
     }
 
+    /**
+     * Adding Variant based product to cart
+     * @param product
+     */
     private void addVBP(Product product) {
         List<Variant> variants = product.variants;
         for (int i = 0; i < variants.size(); i++)
@@ -54,6 +66,10 @@ public class Cart {
         total += variant.price;
     }
 
+    /**
+     * Adding Weight based product to cart
+     * @param product
+     */
     private void addWBP(Product product) {
         System.out.print("Enter qty you want to add : ");
         float qty = sc.nextFloat();
@@ -71,7 +87,10 @@ public class Cart {
         total += product.pricePerKg * qty;
     }
 
-
+    /**
+     * Removing product from cart
+     * @param cart
+     */
     public void remove(Cart cart) {
         while (true) {
             System.out.println(Colors.YELLOW + "\nSelect type of the product you want to remove" + Colors.RESET);
@@ -114,6 +133,10 @@ public class Cart {
         }
     }
 
+    /**
+     * Edit product from cart
+     * @param cart
+     */
     public void edit(Cart cart) {
         while (true) {
             System.out.println(Colors.YELLOW + "\nChoose from following product " + Colors.RESET);
